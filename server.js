@@ -41,6 +41,24 @@ const isAuthenticated = (req, res, next) => {
 	}
 }
 
+// Mongo
+const mongoURI = process.env.MONGODBURI
+const db = mongoose.connection
+mongoose.connect(mongoURI, {
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, ()=>{
+    console.log("Database Connection Checked..")
+})
+db.on('error', (err)=> { console.log('ERROR: ', err)})
+db.on('connected', ()=> { console.log("MONGO Connected")})
+db.on('disconnected', ()=> { console.log("MONGO Disconnected")})
+app.use((req, res, next)=>{
+    next()
+})
+
+
 // Controllers ----
 app.use('/post', require('./controllers/postController'))
 app.use('/user', require('./controllers/userController'))
