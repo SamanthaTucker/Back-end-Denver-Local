@@ -10,3 +10,5 @@ const userSchema = new Schema({
         ref: 'Post'
     }]
 })
+
+module.exports = model('User', userSchema)
