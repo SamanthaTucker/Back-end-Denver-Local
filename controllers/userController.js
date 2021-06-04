@@ -54,7 +54,7 @@ users.post('/login', (req, res) => {
                     res.status(404).json({ error: 'User Not Found'})
                 }
             } else{
-                res.status(400).json({ error: error.message})
+                res.status(400).json({ error: error})
             }
         }
     })
