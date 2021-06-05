@@ -32,24 +32,14 @@ users.post('/', (req, res)=>{
     })
 })
 
-// POST User Login Route -----
-users.post('/login', (req, res) => {
-    userModel.findOne({ username: req.body.username }, (error, foundUser)=>{
+// PUT Edit User Route -----
+users.post('/:id', (req, res) => {
+    userModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, editUser)=>{
         if(error){
-            res.send(error)
-        }else{
-            if(foundUser){
-                if(bcrypt.compareSync(req.body.password, foundUser.password)) {
-
-                    req.session.currentUser = foundUser
-
-                    res.status(200).json(foundUser)
-                }else{
-                    res.status(404).json({ error: 'User Not Found'})
-                }
-            } else{
-                res.status(400).json({ error: error})
-            }
+            res.status(400).json({message: error.message})
+        }
+        else{
+            res.status(200).json({message: `${editUser.username} edited Successfully!`, data: editUser})
         }
     })
 })
