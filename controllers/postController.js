@@ -5,7 +5,7 @@ const userModel = require('../models/userModel')
 
 // GET Route (Index of posts) -----
 posts.get('/', (req, res)=>{
-    console.log('Index posts working')
+    console.log('Index post working')
     userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
         if(error){
             res.status(400).json(error)
