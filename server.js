@@ -8,6 +8,9 @@ const cors = require('cors')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 
+// Middleware ------
+app.use(express.json())
+
 // Sessions ----
 app.use(session({
 	secret: process.env.SECRET,
@@ -15,8 +18,6 @@ app.use(session({
 	saveUninitialized: false
 }))
 
-// Middleware ------
-app.use(express.json())
 
 // CORS ---- 
 const whitelist = ['http://localhost:3000']
@@ -25,21 +26,22 @@ const corsOptions = {
 		if (whitelist.indexOf(origin) !== -1 || !origin) {
 			callback(null, true)
 		} else {
-			callback(new Error('Not allowed by CORS'))
+			callback(new Error('Not allowed by CORS!!'))
 		}
 	},
-	credentials: true
+	credentials: true,
+	methods: "GET, PUT, POST, DELETE"
 }
 app.use(cors(corsOptions))
 
 // Active Sessions Validation -----
-const isAuthenticated = (req, res, next) => {
-	if (req.session.currentUser) {
-		return next()
-	}else {
-		res.status(403).json({msg: 'Login required'})
-	}
-}
+// const isAuthenticated = (req, res, next) => {
+// 	if (req.session.currentUser) {
+// 		return next()
+// 	}else {
+// 		res.status(403).json({msg: 'Login required'})
+// 	}
+// }
 
 // Mongo
 const mongoURI = process.env.MONGODBURI
@@ -60,8 +62,10 @@ app.use((req, res, next)=>{
 
 
 // Controllers ----
-app.use('/blog', isAuthenticated, require('./controllers/blogController'))
+app.use('/blog', require('./controllers/blogController'))
 app.use('/user', require('./controllers/userController'))
+app.use('/profile', require('./controllers/profileController'))
+app.use('/session', require('./controllers/sessionController'))
 
 
 app.listen(PORT, ()=>{
