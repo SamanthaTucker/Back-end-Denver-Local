@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const express = require('express')
 const session = express.Router()
-const User = require('../models/userModel')
+const userModel = require('../models/userModel')
 
 
 // GET Sessions Route ---
