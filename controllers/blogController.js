@@ -1,10 +1,10 @@
 const express = require('express')
-const posts = express.Router()
+const blog = express.Router()
 const postModel = require('../models/postModel')
 const userModel = require('../models/userModel')
 
 // GET Route (Index of posts) -----
-posts.get('/', (req, res)=>{
+blog.get('/', (req, res)=>{
     console.log('Index post working')
     userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
         if(error){
@@ -16,7 +16,7 @@ posts.get('/', (req, res)=>{
 })
 
 //POST create new Post review
-posts.post('/new', (req, res)=>{
+blog.post('/new', (req, res)=>{
     console.log(req.session.currentUser)
 
     postModel.create(req.body, (error, createdPost)=>{
@@ -38,7 +38,7 @@ posts.post('/new', (req, res)=>{
 
 
 // PUT Updating Post -----
-posts.put('/:id', (req, res)=>{
+blog.put('/:id', (req, res)=>{
     console.log('PUT route working')
 
     postsModel.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedPost)=>{
@@ -55,7 +55,7 @@ posts.put('/:id', (req, res)=>{
 })
 
 // DELETE Post Route ------
-posts.delete('/:id', (req, res)=>{
+blog.delete('/:id', (req, res)=>{
     postsModel.findByIdAndDelete(req.params.id, (error, deletedPost)=>{
         if(error){
             res.status(400).json({error: error.message})
@@ -67,4 +67,4 @@ posts.delete('/:id', (req, res)=>{
     })
 })
 
-module.exports = posts
+module.exports = blog

@@ -60,7 +60,7 @@ app.use((req, res, next)=>{
 
 
 // Controllers ----
-app.use('/post', isAuthenticated, require('./controllers/postController'))
+app.use('/blog', isAuthenticated, require('./controllers/blogController'))
 app.use('/user', require('./controllers/userController'))
 
 
