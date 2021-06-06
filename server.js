@@ -5,7 +5,7 @@ const app = express()
 const PORT = process.env.PORT
 const mongoose = require('mongoose')
 const cors = require('cors')
-const session = require('express-session')
+// const session = require('express-session')
 const bodyParser = require('body-parser')
 
 // Middleware ------
@@ -64,8 +64,8 @@ app.use((req, res, next)=>{
 
 // Controllers ----
 app.use('/blog', require('./controllers/blogController'))
-app.use('/user', require('./controllers/userController'))
-app.use('/profile', require('./controllers/profileController'))
+//app.use('/user', require('./controllers/userController'))
+
 
 
 app.listen(PORT, ()=>{
