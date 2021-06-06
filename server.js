@@ -15,7 +15,8 @@ app.use(express.json())
 app.use(session({
 	secret: process.env.SECRET,
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	uri: 'mongodb://127.0.0.1:27017/denverLocal'
 }))
 
 
@@ -44,9 +45,9 @@ app.use(cors(corsOptions))
 // }
 
 // Mongo
-const mongoURI = process.env.MONGODBURI
+const MONGODBURI = process.env.MONGODBURI
 const db = mongoose.connection
-mongoose.connect(mongoURI, {
+mongoose.connect(MONGODBURI, {
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -65,7 +66,6 @@ app.use((req, res, next)=>{
 app.use('/blog', require('./controllers/blogController'))
 app.use('/user', require('./controllers/userController'))
 app.use('/profile', require('./controllers/profileController'))
-app.use('/session', require('./controllers/sessionController'))
 
 
 app.listen(PORT, ()=>{

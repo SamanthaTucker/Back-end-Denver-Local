@@ -6,13 +6,15 @@ const userModel = require('../models/userModel')
 // GET Route (Index of posts) -----
 blog.get('/', (req, res)=>{
     console.log('Index post working')
-    userModel.findById(req.session.currentUser._id, (error, foundUser)=>{
+    userModel.findById(req.session.currentUser._id).populate('blog').exec((error, foundUser)=>{
         if(error){
-            res.status(400).json(error)
-        }else {
-            res.status(200).json(foundUser.userPosts)
+            return res.status(400).json(error)
         }
-    }).populate('userPosts')
+        else{
+            console.log(foundUser)
+            return res.status(200).json(foundUser.blog)
+        }
+    })
 })
 
 //POST create new Post review
