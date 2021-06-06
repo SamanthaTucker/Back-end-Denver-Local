@@ -1,5 +1,4 @@
 require('dotenv').config()
-
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT
@@ -12,12 +11,12 @@ const bodyParser = require('body-parser')
 app.use(express.json())
 
 // Sessions ----
-app.use(session({
-	secret: process.env.SECRET,
-	resave: false,
-	saveUninitialized: false,
-	uri: 'mongodb://127.0.0.1:27017/denverLocal'
-}))
+// app.use(session({
+// 	secret: process.env.SECRET,
+// 	resave: false,
+// 	saveUninitialized: false,
+// 	uri: 'mongodb://127.0.0.1:27017/denverLocal'
+// }))
 
 
 // CORS ---- 
@@ -44,22 +43,19 @@ app.use(cors(corsOptions))
 // 	}
 // }
 
-// Mongo
-const MONGODBURI = process.env.MONGODBURI
+// Mongoose
+const url = 'mongodb://127.0.0.1/blogPostsDenver'
+mongoose.connect(url, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useFindAndModify: false
+})
+
 const db = mongoose.connection
-mongoose.connect(MONGODBURI, {
-    useFindAndModify: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, ()=>{
-    console.log("Database Connection Checked..")
-})
-db.on('error', (err)=> { console.log('ERROR: ', err)})
-db.on('connected', ()=> { console.log("MONGO Connected")})
-db.on('disconnected', ()=> { console.log("MONGO Disconnected")})
-app.use((req, res, next)=>{
-    next()
-})
+db.once('open', ()=> console.log('Database connected'))
+db.on('error', (error)=> console.log(error.message))
+db.on('disconnected', ()=> console.log('Mongoose disconnected'))
+
 
 
 // Controllers ----
